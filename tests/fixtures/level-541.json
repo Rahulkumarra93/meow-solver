@@ -1,0 +1,6 @@
+{
+  "level": 541,
+  "size": 8,
+  "note": "Player has placed one cat at row 6, col 4 (1-based), which hides its yellow cell and makes neighbours glow.",
+  "catColumnPerRow": [5, 7, 4, 6, 1, 3, 0, 2]
+}
