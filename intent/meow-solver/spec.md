@@ -3,7 +3,8 @@ From: intent.md (Gaurav Kumar, product owner). Status: ready for product owner r
 Skills applied: none yet (no organisation skills exist for this project; see concern 4).
 
 ## Requirements
-- R1. The user can give the page a screenshot by file picker, drag and drop, or paste (Ctrl+V / long-press paste).
+- R1. The user can give the page a screenshot by file picker, drag and drop, Ctrl+V, or a "Paste screenshot"
+  button (for phones, where long-press paste only works in text fields).
 - R2. The page finds the board in the screenshot and detects its size N (any N from 4 to 14) without being told.
 - R3. The page reads the colour region of every cell, including cells that are covered by a placed cat
   or tinted by the game's highlight glow.
@@ -46,7 +47,8 @@ is split into pure modules that take plain data (pixel arrays, grids) so they ca
    is built from clean cells only.
 4. Every cell is classified by majority vote of its samples against the palette, which handles the
    glow tint. A cell with too few matching samples (covered by a cat) is "unknown".
-5. For each unknown cell, try each neighbouring region as its colour. Keep the only candidate that
+5. For each unknown cell, try each neighbouring region as its colour, and, when the board is one
+   colour short, a colour of its own (a cat sitting on a single-cell colour). Keep the only candidate that
    gives a valid board with exactly one solution. If zero or several candidates work, show R8's error.
 6. Cats already placed in the screenshot are ignored as moves: the puzzle is solved from scratch,
    because the player's cat could be wrong.
@@ -56,8 +58,8 @@ The solver works like a person, step by step, and records the rule that placed e
 - "X has only one cell left, so the cat must go here" (region, row or column with one candidate cell).
 - "Regions X and Y fill rows a and b between them, so ..." (k regions confined to k rows or columns).
 - "Every other cell in X would block all of Y" (a candidate that would leave another region with no cells).
-When those rules get stuck, a backtracking search finishes the board and the reason becomes
-"the only cell left that keeps every other colour solvable". A final exhaustive search confirms
+When those rules get stuck, the confirmed unique solution supplies the next cat and the reason becomes
+"Every other cell in X leads to a dead end, so the cat must go here." A final exhaustive search confirms
 the solution is unique (R5).
 
 ### Page layout

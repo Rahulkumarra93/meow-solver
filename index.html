@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Upload a screenshot of a Meow level and see where every cat goes, with a one-line reason for each." />
+    <meta name="theme-color" content="#EEEAF6" />
+    <title>Meow solver</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M5 6l6 6h10l6-6v14a11 9 0 0 1-22 0z' fill='%2324203A'/%3E%3Cellipse cx='11.5' cy='17' rx='2.6' ry='2.2' fill='%23F2B632'/%3E%3Cellipse cx='20.5' cy='17' rx='2.6' ry='2.2' fill='%23F2B632'/%3E%3C/svg%3E" />
+  </head>
+  <body data-state="idle">
+    <main>
+      <header>
+        <h1>Meow solver</h1>
+        <p class="lede">Stuck on a level? Give it a screenshot and see where every cat goes, and why.</p>
+      </header>
+
+      <label id="drop" class="drop" for="file">
+        <svg class="mini" viewBox="0 0 96 96" aria-hidden="true">
+          <rect x="2" y="2" width="44" height="44" rx="7" fill="#97B8E8" />
+          <rect x="50" y="2" width="44" height="44" rx="7" fill="#C9B6EC" />
+          <rect x="2" y="50" width="44" height="44" rx="7" fill="#F2B6CD" />
+          <rect x="50" y="50" width="44" height="44" rx="7" fill="#B9DDA3" />
+          <path d="M57 26l3-12 8 7h12l8-7 3 12v8a17 15 0 0 1-34 0z" fill="#24203A" />
+          <ellipse cx="66" cy="31" rx="3.6" ry="3" fill="#F2B632" />
+          <ellipse cx="82" cy="31" rx="3.6" ry="3" fill="#F2B632" />
+        </svg>
+        <span class="drop-title">Choose a screenshot</span>
+        <span class="drop-hint">or drop it here, or paste it with Ctrl+V</span>
+        <input id="file" type="file" accept="image/*" />
+      </label>
+
+      <button id="paste" type="button" class="paste" hidden>Paste screenshot</button>
+
+      <p id="status" class="status" role="status" aria-live="polite"></p>
+
+      <section id="result" class="result" hidden aria-labelledby="result-title">
+        <h2 id="result-title" class="visually-hidden">Solution</h2>
+        <canvas id="board" class="board" role="img"></canvas>
+        <ol id="cats" class="cats"></ol>
+        <div class="actions">
+          <button id="download" type="button" class="primary">Download image</button>
+          <button id="again" type="button">Solve another level</button>
+        </div>
+      </section>
+
+      <footer>
+        <p>Your screenshot never leaves this device. Rules: one cat per colour, one per row and column, and cats can't touch, not even diagonally.</p>
+      </footer>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

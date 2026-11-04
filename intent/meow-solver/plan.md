@@ -1,5 +1,5 @@
 # Plan: Meow puzzle solver (from intent.md and spec.md)
-Author: Claude (plan mode), for approval by Gaurav Kumar. Status: awaiting approval.
+Author: Claude (plan mode), for approval by Gaurav Kumar. Status: approved by product owner (2026-11-04).
 
 ## Stack (pinned)
 Node 22, Vite 8, TypeScript 5 (strict), Vitest 5, ESLint 10 with typescript-eslint, pngjs (tests only,
@@ -48,13 +48,27 @@ to load fixture screenshots in Node). No runtime dependencies in the shipped pag
 | Requirement | Proved by |
 | :--- | :--- |
 | R1 | Manual: file picker, drag-drop, paste on desktop Chrome; file picker on a phone |
-| R2 | tests/grid.test.ts: level 538 gives N=10, level 541 gives N=8 |
-| R3 | tests/regions.test.ts: region grids match the expected grids; level 541 has exactly one unknown cell, resolved to yellow |
+| R2 | tests/pipeline.test.ts (N=10 and N=8, also shrunk), tests/sizes.test.ts (4 to 14), tests/review-findings.test.ts (banners) |
+| R3 | tests/pipeline.test.ts: region grids match; level 541 has one unknown cell, resolved to yellow. tests/review-findings.test.ts: cat on a single-cell colour |
 | R4 | tests/validate.test.ts: merged regions, split region, wrong count each rejected |
-| R5 | tests/solve.test.ts + tests/fixtures.test.ts: answers equal catColumnPerRow in the fixture JSON; two-solution grid rejected |
+| R5 | tests/solve.test.ts + tests/pipeline.test.ts: answers equal catColumnPerRow in the fixture JSON; two-solution grid rejected |
 | R6, R9 | Manual screenshot of the result page for both fixtures; downloaded PNG opens |
 | R7 | tests/solve.test.ts: every cat has a non-empty reason; single-cell region gives the "only one cell" reason |
-| R8 | tests/fixtures.test.ts: cropped and non-game images return the exact R8 message |
-| R10 | No fetch/XHR in src/ (lint rule `no-restricted-globals` for fetch, XMLHttpRequest, navigator.sendBeacon) |
+| R8 | tests/pipeline.test.ts: cropped and non-game images return the exact R8 message |
+| R10 | Lint rule bans fetch/XHR/WebSocket/sendBeacon in src/; the built page carries a Content-Security-Policy with connect-src 'none' |
 | R11 | Manual check on a phone browser after deploy |
-| R12 | tests/fixtures.test.ts asserts each fixture solves in under 500 ms in Node |
+| R12 | tests/pipeline.test.ts asserts each fixture solves in under 500 ms in Node |
+
+## Review (v1, independent reviewer, 2026-11-05)
+No wrong answers and no data leaks found. Important findings and what was done:
+1. A cat on a single-cell colour gave the R8 error. Fixed: a hidden cell may be a colour of its own
+   when the board is one colour short; test pastes the real cat from level 541 onto level 538's yellow.
+2. A full-width coloured banner broke board detection. Fixed: detection picks the evenly spaced run
+   of cell bands and trims bars that line up with it; tests add banners above and below the board.
+3. Long-press paste is impossible on phones. Fixed: "Paste screenshot" button using the clipboard.
+4. Two quick uploads could leave the older answer on screen. Fixed: only the newest upload may update the page.
+5. Two colours could get the same name. Fixed: "pale blue" for the base colour, numbering as a last resort.
+Nits fixed: unexpected errors show the R8 message; drops outside the zone no longer leave the app;
+Content-Security-Policy blocks all network connections; a cell needs 40% of samples to be labelled;
+spec wording for the fallback reason aligned with the code.
+Not verified yet: R11 (real phone browsers) and R12 on a phone; to be checked after deploy.
