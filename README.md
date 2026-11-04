@@ -3,7 +3,7 @@
 Stuck on a level of the Meow cat game? Upload a screenshot and see where every cat goes,
 with a one-line reason for each.
 
-**Live app:** https://rahulkumarra93.github.io/meow-solver/
+**Live app:** deployed on Vercel from `main` (see the repo's About link).
 
 - Works with any board size (8 x 8, 10 x 10, ...).
 - Runs entirely in your browser: the screenshot never leaves your device.
